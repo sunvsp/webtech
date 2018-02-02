@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Lab 3</title>
+    <link rel="stylesheet"  type="text/css" href="master.css">
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="line1"></div>
+      <div id="line2"></div>
+      <div id="sun">
+    
+       <center><img src="" id="img" style="display:none;width: 400px;height: 205px; float:left; margin-top: 20px; margin-left: 30px;" ></center> 
+        <center><p id="ques">Question Fortune!!!</p></center>
+        <center><p id="showname" >Copyright &copy; By Sun Vasupol</p></center>
+        <button type="button" onclick="startGame()" id="one"  >Start Game...</button>
+        <button type="button" id="two" style="display:none" >20 Questions</button>
+        <button type="button" id="three" style="display:none" ></button>
+        <button type="button" id="four" style="display:none"  ></button>
+        <p style="display:none" id="timer" >Timer</p>
+        <div id="myProgress" style="display:none">
+            <div id="myBar" style="display:none"></div>
+        </div>
+        
+      </div>
+      
+      
+      
+
+
+
+    </div>
+    <style type="text/css">
+    #timer{
+      margin-left: 50px;
+      color: white;
+      font-family: 'Lobster';
+      font-size: 20px;
+    }
+    #myProgress {
+      width: 98%;
+      background-color: grey;
+      margin-left: 10px;
+      
+    }
+    #myBar {
+      width: 98%;
+      height: 30px;
+      background-color: white;
+      margin-top: -10px;
+      
+    }
+    </style>
+    <script src="jquery-3.3.1.min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+          var list;
+          var n;
+          var ran;
+          var score = 0;
+          var qst = 35;
+          var id ;
+          var backUp;
+          var nBackUp
+  
+
+          // $(document).ready(function(){
+          //       console.log("READY");
+              function startGame() {
+                
+                $("#ques").text("เลือกจำนวนข้อ");
+                document.getElementById('ques').style.fontFamily = 'Pattaya';
+                
+                // document.getElementById('st').style.display = 'none';
+                $("#one").text("10 Questions");
+                $("#two").text("20 Questions");
+                document.getElementById('one').setAttribute( "onClick", "javascript: display(10);" );
+                document.getElementById('two').setAttribute( "onClick", "javascript: display(20);" );
+                document.getElementById('two').style.display = 'block';
+                document.getElementById('ques').style.display = 'block';
+                document.getElementById('showname').style.display = 'none';
+
+
+              }
+
+              function display(num){
+                
+                document.getElementById('one').style.width = '220px';
+                document.getElementById('two').style.width = '220px';
+                document.getElementById('three').style.width = '220px';
+                document.getElementById('four').style.width = '220px';
+                document.getElementById('one').style.marginLeft = '30px';
+                document.getElementById('two').style.marginLeft = '30px';
+                document.getElementById('three').style.marginLeft = '30px';
+                document.getElementById('four').style.marginLeft = '30px';
+                
+                n = num;
+                nBackUp = num;
+                document.getElementById('one').setAttribute( "onClick", "check('one')" );
+                document.getElementById('two').setAttribute( "onClick", "check('two')" );
+                document.getElementById('three').setAttribute( "onClick", "check('three')" );
+                document.getElementById('four').setAttribute( "onClick", "check('four')" );
+              console.log(num);
+              document.getElementById('three').style.display = 'inline-block';
+              document.getElementById('four').style.display = 'inline-block';
+              document.getElementById('myProgress').style.display = 'block';
+              document.getElementById('myBar').style.display = 'block';
+              document.getElementById('timer').style.display = 'block';
+              document.getElementById('one').style.display = 'inline-block';
+              document.getElementById('two').style.display = 'inline-block';
+              document.getElementById('ques').style.fontSize = '45px';
+              document.getElementById('ques').style.paddingTop = '20px';
+              
+              ques();
+
+              }
+
+
+
+              function check(name){
+
+                console.log(document.getElementById(name).textContent);
+                console.log(list[ran]["ans"]);
+                if(document.getElementById(name).textContent == list[ran]["ans"]){
+                  score += 1;
+                }
+                list.splice(ran,1);
+                ques();
+              }
+
+              function ques(){
+
+                clearInterval(id);
+                  ran = Math.floor(Math.random()*qst);
+                  console.log(ran);
+                  if(list[ran]["img"] != ""){
+                   
+                document.getElementById('one').style.marginLeft = '80px';
+                document.getElementById('two').style.marginLeft = '50px';
+                document.getElementById('three').style.marginLeft = '50px';
+                document.getElementById('four').style.marginLeft = '50px';
+                    document.getElementById('img').style.display = 'inline-block';
+                    document.getElementById("img").src = list[ran]["img"];
+                  }else {
+                    document.getElementById('img').style.display = 'none';
+                  
+                document.getElementById('one').style.marginLeft = '30px';
+                document.getElementById('two').style.marginLeft = '30px';
+                document.getElementById('three').style.marginLeft = '30px';
+                document.getElementById('four').style.marginLeft = '30px';
+                  }
+                  $("#ques").text(list[ran]["question"]);
+                  $("#one").text(list[ran]["1"]);
+                  $("#two").text(list[ran]["2"]);
+                  $("#three").text(list[ran]["3"]);
+                  $("#four").text(list[ran]["4"]);
+
+                  console.log(list)
+                  n = n-1;
+                  qst = qst -1;
+                  move();
+                  if( n == -1){
+                    console.log("Game Over");
+                    console.log(score);
+                    gameOver();
+                  }
+
+                }
+
+
+
+                function move() {
+                    var elem = document.getElementById("myBar");
+                    var width = 100;
+                     id = setInterval(frame, 150);
+
+
+                    function frame() {
+                        if (width <= 0) {
+                          if(n >= 0){
+                            ques();
+                          }
+
+                        } else {
+                            width--;
+                            elem.style.width = width + '%';
+                        }
+                    }
+                }
+
+                function gameOver(){
+                  document.getElementById('img').style.display = 'none';
+                  document.getElementById('four').style.display = 'none';
+                  document.getElementById('one').setAttribute( "onClick", "restartGame()" );
+                  document.getElementById('two').style.display = 'none';
+                  document.getElementById('three').style.display = 'none';
+                  document.getElementById('four').style.display = 'none';
+                  document.getElementById('myProgress').style.display = 'none';
+                  document.getElementById('myBar').style.display = 'none';
+                  document.getElementById('timer').style.display = 'none';
+                  $("#ques").text("Your Score is "+score+" / "+nBackUp);
+                  $("#one").text("Restart Game...");
+                  document.getElementById('one').style.marginLeft = '170px';
+                  document.getElementById('one').style.width = '70%';
+                  document.getElementById('two').style.marginLeft = '170px';
+                  document.getElementById('two').style.width = '70%';
+                  document.getElementById('ques').style.fontSize = '120px';
+                  
+                 }
+                
+
+
+                function restartGame(){
+                    document.getElementById('one').setAttribute( "onClick", "startGame()" );
+                    
+                    $("#one").text("Start Game...");
+                    document.getElementById('showname').style.display = 'block';
+                    document.getElementById('ques').style.fontSize = '850%';
+                    $("#ques").text("Question Fortune!!!");
+                    console.log("Restart");
+                    console.log(list);
+                    console.log(backUp);
+                    list = backUp.slice(0);;
+                    n = 0;
+                    score = 0;
+                    qst = 35;
+                    ran;
+                }
+
+
+
+
+
+
+
+
+
+
+                $.ajax({
+                  url: 'question.json',
+                  method : 'GET',
+                  dataType: 'json',
+                  success : function(response) {
+                      console.log(response);
+                       list = response;
+                       backUp = list.slice(0);
+                    
+                    }
+                });
+          // });
+    </script>
+  </body>
+</html>
