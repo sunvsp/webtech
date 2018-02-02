@@ -13,6 +13,7 @@
     
        <center><img src="" id="img" style="display:none;width: 400px;height: 205px; float:left; margin-top: 20px; margin-left: 30px;" ></center> 
         <center><p id="ques">Question Fortune!!!</p></center>
+        <center><p id="time" style="display:none;"></p></center>
         <center><p id="showname" >Copyright &copy; By Sun Vasupol</p></center>
         <button type="button" onclick="startGame()" id="one"  >Start Game...</button>
         <button type="button" id="two" style="display:none" >20 Questions</button>
@@ -62,8 +63,8 @@
           var id ;
           var backUp;
           var nBackUp
-  
-
+          var ti=0;
+          var timer;
           // $(document).ready(function(){
           //       console.log("READY");
               function startGame() {
@@ -110,7 +111,7 @@
               document.getElementById('two').style.display = 'inline-block';
               document.getElementById('ques').style.fontSize = '45px';
               document.getElementById('ques').style.paddingTop = '20px';
-              
+              time();
               ques();
 
               }
@@ -166,8 +167,13 @@
                   }
 
                 }
-
-
+                function time(){
+                  timer = setInterval(function(){
+                    ti++;
+                    console.log("time: "+ti);
+                  },1000)
+                }
+                
 
                 function move() {
                     var elem = document.getElementById("myBar");
@@ -189,6 +195,7 @@
                 }
 
                 function gameOver(){
+                  clearInterval(timer);
                   document.getElementById('img').style.display = 'none';
                   document.getElementById('four').style.display = 'none';
                   document.getElementById('one').setAttribute( "onClick", "restartGame()" );
@@ -201,18 +208,20 @@
                   $("#ques").text("Your Score is "+score+" / "+nBackUp);
                   $("#one").text("Restart Game...");
                   document.getElementById('one').style.marginLeft = '170px';
+                  document.getElementById('one').style.marginTop = '-20px';
                   document.getElementById('one').style.width = '70%';
                   document.getElementById('two').style.marginLeft = '170px';
                   document.getElementById('two').style.width = '70%';
                   document.getElementById('ques').style.fontSize = '120px';
-                  
+                  document.getElementById('time').style.display = 'block';
+                  $("#time").text("Total Time: "+ti);
                  }
                 
 
 
                 function restartGame(){
                     document.getElementById('one').setAttribute( "onClick", "startGame()" );
-                    
+                    document.getElementById('time').style.display = 'none';
                     $("#one").text("Start Game...");
                     document.getElementById('showname').style.display = 'block';
                     document.getElementById('ques').style.fontSize = '850%';
@@ -220,7 +229,8 @@
                     console.log("Restart");
                     console.log(list);
                     console.log(backUp);
-                    list = backUp.slice(0);;
+                    list = backUp.slice(0);
+                    ti = 0;
                     n = 0;
                     score = 0;
                     qst = 35;
